@@ -19,10 +19,16 @@ if ($_POST['collect']) {
 function dataVerification($imgDir) {
     if (strtoupper(substr(PHP_OS,0,3)) === 'WIN') {
         $imgDirArr = explode('\\', $imgDir);
+        $slicer = '\\';
     } else {
         $imgDirArr = explode('/', $imgDir);
+        $slicer = '/';
     }
-    if (is_dir($imgDirArr[0])) {
+    if (strstr($imgDirArr[0], $slicer) || strstr($imgDirArr[0], '.')) {
+        die("<script>alert('是你飘了？还是我提不动刀了？');</script>");
+    }
+    $currentDir = '.' . $slicer . $imgDirArr[0];
+    if (is_dir($currentDir)) {
         $dir = opendir($imgDirArr[0]);
         while(($filename = readdir($dir)) !== false) {
             if ($filename != "." && $filename != "..") {
