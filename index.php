@@ -8,7 +8,7 @@ if (isset($_GET['type'])) {
         } else {
             $slicer = '/';
         }
-        if (strstr($_GET['dir'], $slicer)) {
+        if (strstr($_GET['dir'], $slicer) || strstr($_GET['dir'], '.')) {
             die("<script>alert('是你飘了？还是我提不动刀了？');</script>");
         }
         if ($_GET['dir'] !== 'collect.txt') {

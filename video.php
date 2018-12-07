@@ -4,7 +4,7 @@ if (strtoupper(substr(PHP_OS,0,3)) === 'WIN') {
 } else {
     $slicer = '/';
 }
-if (strstr($_GET['dir'], $slicer)) {
+if (strstr($_GET['dir'], $slicer) || strstr($_GET['dir'], '.')) {
     die("<script>alert('是你飘了？还是我提不动刀了？');</script>");
 }
 $dir = $_GET['dir'];
