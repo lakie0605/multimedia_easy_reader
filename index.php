@@ -12,7 +12,7 @@ if (isset($_GET['type'])) {
             die("<script>alert('是你飘了？还是我提不动刀了？');</script>");
         }
         if ($_GET['dir'] !== 'collect.txt') {
-            $currentDir = '.' . $slicer . $dir;
+            $currentDir = '.' . $slicer . $_GET['dir'];
             if (!is_dir($currentDir)) {
                 die ("<script>alert('目录不存在！');</script>");
             }
