@@ -3,14 +3,19 @@
 if (isset($_GET['type'])) {
     $type = $_GET['type'];
     if (isset($_GET['dir'])) {
-        $dir = $_GET['dir'];
         if (strtoupper(substr(PHP_OS,0,3)) === 'WIN') {
             $slicer = '\\';
         } else {
             $slicer = '/';
         }
-        if (strstr($dir, $slicer)) {
+        if (strstr($_GET['dir'], $slicer)) {
             die("<script>alert('是你飘了？还是我提不动刀了？');</script>");
+        }
+        if ($_GET['dir'] !== 'collect.txt') {
+            $currentDir = '.' . $slicer . $dir;
+            if (!is_dir($currentDir)) {
+                die ("<script>alert('目录不存在！');</script>");
+            }
         }
     }
 } else {
@@ -44,9 +49,9 @@ if ($type == 'p') {
 function image($dir, $pattern) {
     //根据环境判断目录
     if (strtoupper(substr(PHP_OS,0,3)) === 'WIN') {
-        $firstDir = 'textDir\\';
+        $firstDir = '.\\textDir\\';
     } else {
-        $firstDir = 'textDir/';
+        $firstDir = './textDir/';
     }
     if ($dir === 'collect.txt') {
         $collectFileDir = $firstDir . $dir;

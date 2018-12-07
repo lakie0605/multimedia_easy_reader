@@ -1,16 +1,29 @@
 <?php
-$dir = $_GET['dir'] . '/';
+if (strtoupper(substr(PHP_OS,0,3)) === 'WIN') {
+    $slicer = '\\';
+} else {
+    $slicer = '/';
+}
+if (strstr($_GET['dir'], $slicer)) {
+    die("<script>alert('是你飘了？还是我提不动刀了？');</script>");
+}
+$dir = $_GET['dir'];
 $beginName = $_GET['name'];
 //打开目录获取播放列表
-$handler = opendir($dir);
-while(($filename = readdir($handler)) !== false)
-{
-    if($filename != "." && $filename != "..") {
-        $filename = iconv("GB2312", "UTF-8", $filename);
-        $videoNames[] = $filename;
+$currentDir = '.' . $slicer . $dir;
+if (is_dir($currentDir)) {
+    $handler = opendir($dir);
+    while(($filename = readdir($handler)) !== false)
+    {
+        if($filename != "." && $filename != "..") {
+            $filename = iconv("GB2312", "UTF-8", $filename);
+            $videoNames[] = $filename;
+        }
     }
+    closedir($handler);
+} else {
+    die ("<script>alert('目录不存在！');</script>");
 }
-closedir($handler);
 //获取视频相对路径
 $path = __DIR__;
 if (strstr($path, '/')) {
