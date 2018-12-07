@@ -7,7 +7,7 @@ if (strtoupper(substr(PHP_OS,0,3)) === 'WIN') {
 if (strstr($_GET['dir'], $slicer) || strstr($_GET['dir'], '.')) {
     die("<script>alert('是你飘了？还是我提不动刀了？');</script>");
 }
-$dir = $_GET['dir'];
+$dir = $_GET['dir'] . $slicer;
 $beginName = $_GET['name'];
 //打开目录获取播放列表
 $currentDir = '.' . $slicer . $dir;
@@ -53,8 +53,6 @@ echo "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://
             var subscript = $subscript;
             
             window.onload = function(){
-//                var info = document.getElementById('info');
-//                info.innerHTML = video[index];
                 index = subscript;
                 videoObject = document.getElementById('videoID');
                 videoObject.onended = function() 

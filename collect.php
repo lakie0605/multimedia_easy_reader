@@ -1,14 +1,14 @@
 <?php
 
-if ($_POST['collect']) {
+if (isset($_POST['collect']) && !is_null($_POST['collect'])) {
     $imgDir = $_POST['collect'] . ";";
     dataVerification($imgDir);
     collect($imgDir);
-} elseif ($_POST['uncollect']) {
+} elseif (isset($_POST['uncollect']) && !is_null($_POST['uncollect'])) {
     $imgDir = $_POST['uncollect'] . ";";
     dataVerification($imgDir);
     unCollect($imgDir);
-} elseif ($_POST['record']) {
+} elseif (isset($_POST['record']) && !is_null($_POST['record'])) {
     $imgDir = $_POST['record'];
     dataVerification($imgDir);
     record($imgDir);
@@ -17,14 +17,10 @@ if ($_POST['collect']) {
 }
 
 function dataVerification($imgDir) {
-    if (strtoupper(substr(PHP_OS,0,3)) === 'WIN') {
-        $imgDirArr = explode('\\', $imgDir);
-        $slicer = '\\';
-    } else {
-        $imgDirArr = explode('/', $imgDir);
-        $slicer = '/';
-    }
+    $imgDirArr = explode('/', $imgDir);
+    $slicer = '/';
     if (strstr($imgDirArr[0], $slicer) || strstr($imgDirArr[0], '.')) {
+        print_r($imgDirArr[0]);
         die("<script>alert('是你飘了？还是我提不动刀了？');</script>");
     }
     $currentDir = '.' . $slicer . $imgDirArr[0];

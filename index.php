@@ -11,7 +11,7 @@ if (isset($_GET['type'])) {
         if (strstr($_GET['dir'], $slicer) || strstr($_GET['dir'], '.')) {
             die("<script>alert('是你飘了？还是我提不动刀了？');</script>");
         }
-        if ($_GET['dir'] !== 'collect.txt') {
+        if ($_GET['dir'] !== 'collect') {
             $currentDir = '.' . $slicer . $_GET['dir'];
             if (!is_dir($currentDir)) {
                 die ("<script>alert('目录不存在！');</script>");
@@ -53,8 +53,8 @@ function image($dir, $pattern) {
     } else {
         $firstDir = './textDir/';
     }
-    if ($dir === 'collect.txt') {
-        $collectFileDir = $firstDir . $dir;
+    if ($dir === 'collect') {
+        $collectFileDir = $firstDir . $dir . '.txt';
         $collectFile = fopen($collectFileDir,'r') or die ("can't open file");
         $data = fread($collectFile, filesize($collectFileDir));
         $srcArr = explode(';', $data);
@@ -97,7 +97,7 @@ function image($dir, $pattern) {
         $catalogPrefix = $_GET['user'] . '_';
     }
     if (isset($_GET['h'])) {
-        if ($dir === 'collect.txt') {
+        if ($dir === 'collect') {
             $recordFileDir = $firstDir . $catalogPrefix . 'collect_record.txt';
         } else {
             $recordFileDir = $firstDir . $catalogPrefix . 'record.txt';
@@ -160,7 +160,7 @@ function image($dir, $pattern) {
  
                     //收藏与取消收藏
                     function collect() {
-                        if (dir === 'collect.txt') {
+                        if (dir === 'collect') {
                             document.getElementById('collect').name = 'uncollect';
                             document.getElementById('buttonName').value = '取消收藏';
                             document.getElementById('link').href = 'javascript:history.back();';
@@ -168,7 +168,7 @@ function image($dir, $pattern) {
                         } else {
                             document.getElementById('collect').name = 'collect';
                             document.getElementById('buttonName').value = '收藏';
-                            document.getElementById('link').href = '/bt?type=p&&dir=collect.txt&&auto=1&h&user=' + user;
+                            document.getElementById('link').href = '/bt?type=p&&dir=collect&&auto=1&h&user=' + user;
                         }
                         dirDecode();
                         record();
@@ -178,7 +178,7 @@ function image($dir, $pattern) {
                     
                     //保存浏览记录
                     function record() {
-                        if (dir === 'collect.txt') {
+                        if (dir === 'collect') {
                             document.getElementById('catalog').value = 'collect_record';
                         } else {
                             document.getElementById('catalog').value = 'record';
