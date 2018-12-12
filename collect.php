@@ -1,31 +1,36 @@
 <?php
 
 if (isset($_POST['collect']) && !is_null($_POST['collect'])) {
-    $imgDir = $_POST['collect'] . ";";
-    dataVerification($imgDir);
-    collect($imgDir);
+    $value = $_POST['collect'] . ";";
+    dataVerification($value);
+    collect($value);
 } elseif (isset($_POST['uncollect']) && !is_null($_POST['uncollect'])) {
-    $imgDir = $_POST['uncollect'] . ";";
-    dataVerification($imgDir);
-    unCollect($imgDir);
+    $value = $_POST['uncollect'] . ";";
+    dataVerification($value);
+    unCollect($value);
 } elseif (isset($_POST['record']) && !is_null($_POST['record'])) {
-    $imgDir = $_POST['record'];
-    dataVerification($imgDir);
-    record($imgDir);
+    $value = $_POST['record'];
+    dataVerification($value);
+    record($value);
 } else {
     die ("<script>history.back();</script>");
 }
 
-function dataVerification($imgDir) {
-    $imgDirArr = explode('/', $imgDir);
-    $slicer = '/';
-    if (strstr($imgDirArr[0], $slicer) || strstr($imgDirArr[0], '.')) {
-        print_r($imgDirArr[0]);
+function dataVerification($value) {
+    if (strstr($value, '/')) {
+        $valueArr = explode('/', $value);
+        $slicer = '/';
+    } else {
+        $valueArr = explode('\\', $value);
+        $slicer = '\\';
+    }
+    if (strstr($valueArr[0], $slicer) || strstr($valueArr[0], '.')) {
+        print_r($valueArr[0]);
         die("<script>alert('是你飘了？还是我提不动刀了？');</script>");
     }
-    $currentDir = '.' . $slicer . $imgDirArr[0];
+    $currentDir = '.' . $slicer . $valueArr[0];
     if (is_dir($currentDir)) {
-        $dir = opendir($imgDirArr[0]);
+        $dir = opendir($valueArr[0]);
         while(($filename = readdir($dir)) !== false) {
             if ($filename != "." && $filename != "..") {
                 $filename = iconv("GB2312", "UTF-8", $filename);
@@ -36,9 +41,9 @@ function dataVerification($imgDir) {
     } else {
         die ("<script>alert('目录不存在！');history.back();</script>");
     }
-    $img = $imgDirArr[1];
+    $img = $valueArr[1];
     if (substr($img, -1) == ';') {
-        $img = substr($img, 0, mb_strlen($img) - 1);
+        $img = substr($img, 0, strlen($img) - 1);
     }
     if (in_array($img, $imgArr)) {
         return 1;
@@ -50,21 +55,29 @@ function dataVerification($imgDir) {
 /**
  * 收藏
  *
- * @param $imgDir
+ * @param $value
  */
-function collect($imgDir) {
+function collect($value) {
     //根据环境判断目录
     if (strtoupper(substr(PHP_OS,0,3)) === 'WIN') {
-        $collectFileDir = 'textDir\collect.txt';
+        if (isset($_POST['category']) && $_POST['category'] === 'video') {
+            $collectFileDir = 'textDir\video_collect.txt';
+        } else {
+            $collectFileDir = 'textDir\collect.txt';
+        }
     } else {
-        $collectFileDir = 'textDir/collect.txt';
+        if (isset($_POST['category']) && $_POST['category'] === 'video') {
+            $collectFileDir = 'textDir/video_collect.txt';
+        } else {
+            $collectFileDir = 'textDir/collect.txt';
+        }
     }
     $collectFile = fopen($collectFileDir, 'a+') or die("can't open file");
     $data = fread($collectFile, filesize($collectFileDir));
-    if (strstr($data, $imgDir)) {
+    if (strstr($data, $value)) {
         die ("<script>alert('已经收藏了！');history.back();</script>");
     }
-    fwrite($collectFile, $imgDir);
+    fwrite($collectFile, $value);
     fclose($collectFile);
     echo "<script>history.back();</script>";
 }
@@ -72,13 +85,21 @@ function collect($imgDir) {
 /**
  * 取消收藏
  *
- * @param $imgDir
+ * @param $value
  */
-function unCollect($imgDir) {
+function unCollect($value) {
     if (strtoupper(substr(PHP_OS,0,3)) === 'WIN') {
-        $collectFileDir = 'textDir\collect.txt';
+        if (isset($_POST['category']) && $_POST['category'] === 'video') {
+            $collectFileDir = 'textDir\video_collect.txt';
+        } else {
+            $collectFileDir = 'textDir\collect.txt';
+        }
     } else {
-        $collectFileDir = 'textDir/collect.txt';
+        if (isset($_POST['category']) && $_POST['category'] === 'video') {
+            $collectFileDir = 'textDir/video_collect.txt';
+        } else {
+            $collectFileDir = 'textDir/collect.txt';
+        }
     }
     //读取收藏内容
     $readFile = fopen($collectFileDir, 'r') or die("can't open file");
@@ -86,18 +107,26 @@ function unCollect($imgDir) {
     fclose($readFile);
     //写入新的收藏内容
     $writeFile = fopen($collectFileDir, 'w+') or die("can't open file");
-    $data = str_replace($imgDir, '', $fileData);
+    $data = str_replace($value, '', $fileData);
     fwrite($writeFile, $data);
     fclose($writeFile);
-    echo "<script>alert('取消成功，刷新生效！');history.back();</script>";
+    $arrValue = explode('/', $value);
+    $oldDir = $arrValue[0];
+    if (isset($_POST['category']) && $_POST['category'] === 'video') {
+        $url = 'index.php?type=v&dir=collect&oldDir=' . $oldDir;
+        $urlJson = json_encode($url);
+        echo "<script>var url = $urlJson;alert('取消成功!');window.location.href=url;</script>";
+    } else {
+        echo "<script>alert('取消成功，刷新生效！');history.back();</script>";
+    }
 }
 
 /**
  * 保存记录
  *
- * @param $imgDir
+ * @param $value
  */
-function record($imgDir) {
+function record($value) {
     $logDir = ['collect_record', 'record'];
     if (in_array($_POST['catalog'], $logDir)) {
         if (strtoupper(substr(PHP_OS,0,3)) === 'WIN') {
@@ -106,7 +135,7 @@ function record($imgDir) {
             $file = 'textDir/' . $_POST['prefix'] . $_POST['catalog'] . '.txt';
         }
         $collectFile = fopen($file, 'w+') or die("can't open file");
-        fwrite($collectFile, $imgDir);
+        fwrite($collectFile, $value);
         fclose($collectFile);
         echo "<script>alert('记录成功！');history.back();</script>";
     } else {

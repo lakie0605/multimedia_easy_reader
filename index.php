@@ -19,7 +19,7 @@ if (isset($_GET['type'])) {
         }
     }
 } else {
-    die('饭可以乱吃，数据不能乱传！');
+    die("<script>alert('饭可以乱吃，数据不能乱传！');</script>");
 }
 
 //调用函数
@@ -44,6 +44,71 @@ if ($type == 'p') {
         $dir = $_GET['dir'];
     }
     video($dir);
+}
+
+function video($dir) {
+    //根据环境判断目录
+    if (strtoupper(substr(PHP_OS,0,3)) === 'WIN') {
+        $firstDir = '.\\textDir\\';
+    } else {
+        $firstDir = './textDir/';
+    }
+    if ($dir === 'collect') {
+        $collectFileDir = $firstDir . 'video_' . $dir . '.txt';
+        $collectFile = fopen($collectFileDir,'r') or die ("can't open file");
+        $data = fread($collectFile, filesize($collectFileDir));
+        $srcArr = explode(';', $data);
+        //删除最后一个空白字符
+        if (!$srcArr[count($srcArr) - 1]) {
+            unset($srcArr[count($srcArr) - 1]);
+        }
+        if (count($srcArr) < 1) {
+            $oldDir = $_GET['oldDir'];
+            $url = 'index.php?type=v&dir=' . $oldDir;
+            $urlJson = json_encode($url);
+            die ("<script>var url = $urlJson;window.location.href=url;</script>");
+        }
+        fclose($collectFile);
+        foreach ($srcArr as $src) {
+            $path = __DIR__;
+            if (strstr($path, '/')) {
+                $arrPath = explode('/', $path);
+            } else {
+                $arrPath = explode('\\', $path);
+            }
+            if (strstr($src, '/')) {
+                $arrUrl = explode('/', $src);
+            } else {
+                $arrUrl = explode('\\', $src);
+            }
+            $presentFolder =  $arrPath[count($arrPath) - 1];
+            $filename = $arrUrl[count($arrUrl) - 1];
+            $url = '/' .  $presentFolder . '/video.php?c&dir=' . $arrUrl[0] . '&name=' . $filename;
+            echo "<a href=$url>$filename</a><br>";
+        }
+    } else {
+        if (is_dir($dir)) {
+            $handler = opendir($dir);
+            while(($filename = readdir($handler)) !== false)
+            {
+                if($filename != "." && $filename != "..") {
+                    $filename = iconv("GB2312", "UTF-8", $filename);
+                    $path = __DIR__;
+                    if (strstr($path, '/')) {
+                        $arrPath = explode('/', $path);
+                    } else {
+                        $arrPath = explode('\\', $path);
+                    }
+                    $presentFolder =  $arrPath[count($arrPath) - 1];
+                    $url = '/' .  $presentFolder . '/video.php?dir=' . $dir . '&name=' . $filename;
+                    echo "<a href=$url>$filename</a><br>";
+                }
+            }
+            closedir($handler);
+        } else {
+            die ("<script>alert('目录不存在！');</script>");
+        }
+    }
 }
 
 function image($dir, $pattern) {
@@ -353,24 +418,4 @@ function image($dir, $pattern) {
              </body>
              </html>";
     }
-}
-
-function video($dir) {
-    $handler = opendir($dir);
-    while(($filename = readdir($handler)) !== false)
-    {
-        if($filename != "." && $filename != "..") {
-            $filename = iconv("GB2312", "UTF-8", $filename);
-            $path = __DIR__;
-            if (strstr($path, '/')) {
-                $arrPath = explode('/', $path);
-            } else {
-                $arrPath = explode('\\', $path);
-            }
-            $presentFolder =  $arrPath[count($arrPath) - 1];
-            $url = '/' .  $presentFolder . '/video.php?dir=' . $dir . '&&name=' . $filename;
-            echo "<a href=$url>$filename</a><br>";
-        }
-    }
-    closedir($handler);
 }
