@@ -42,5 +42,5 @@ user：用户，传了且有真实值则根据用户保存浏览记录。</li>
 localhost/xx?type=v&amp;dir=video<br>
 xx：项目目录；<br>
 type：v为视频；<br>
-dir：视频目录，不传则默认为‘video’。</li>
+dir：视频目录，不传则默认为‘video’，值为‘collect’时为收藏列表。</li>
 </ol>
