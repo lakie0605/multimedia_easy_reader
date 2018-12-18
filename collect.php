@@ -73,7 +73,8 @@ function collect($value) {
         }
     }
     $collectFile = fopen($collectFileDir, 'a+') or die("can't open file");
-    $data = fread($collectFile, filesize($collectFileDir));
+    $fileSize = filesize($collectFileDir) > 0 ? filesize($collectFileDir) : 1;
+    $data = fread($collectFile, $fileSize);
     if (strstr($data, $value)) {
         die ("<script>alert('已经收藏了！');history.back();</script>");
     }
@@ -103,7 +104,8 @@ function unCollect($value) {
     }
     //读取收藏内容
     $readFile = fopen($collectFileDir, 'r') or die("can't open file");
-    $fileData = fread($readFile, filesize($collectFileDir));
+    $fileSize = filesize($collectFileDir) > 0 ? filesize($collectFileDir) : 1;
+    $fileData = fread($readFile, $fileSize);
     fclose($readFile);
     //写入新的收藏内容
     $writeFile = fopen($collectFileDir, 'w+') or die("can't open file");

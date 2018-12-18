@@ -56,7 +56,8 @@ function video($dir) {
     if ($dir === 'collect') {
         $collectFileDir = $firstDir . 'video_' . $dir . '.txt';
         $collectFile = fopen($collectFileDir,'r') or die ("can't open file");
-        $data = fread($collectFile, filesize($collectFileDir));
+        $fileSize = filesize($collectFileDir) > 0 ? filesize($collectFileDir) : 1;
+        $data = fread($collectFile, $fileSize);
         $srcArr = explode(';', $data);
         //删除最后一个空白字符
         if (!$srcArr[count($srcArr) - 1]) {
@@ -121,7 +122,8 @@ function image($dir, $pattern) {
     if ($dir === 'collect') {
         $collectFileDir = $firstDir . $dir . '.txt';
         $collectFile = fopen($collectFileDir,'r') or die ("can't open file");
-        $data = fread($collectFile, filesize($collectFileDir));
+        $fileSize = filesize($collectFileDir) > 0 ? filesize($collectFileDir) : 1;
+        $data = fread($collectFile, $fileSize);
         $srcArr = explode(';', $data);
         //删除最后一个空白字符
         if (!$srcArr[count($srcArr) - 1]) {
