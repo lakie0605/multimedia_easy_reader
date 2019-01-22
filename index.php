@@ -213,6 +213,36 @@ function image($dir, $pattern) {
               <head>
                 <meta charset='UTF-8'>
                 <title>image</title>
+                <style>
+                    .input, button {
+                        background-color: #4CAF50;
+                        border: none;
+                        color: white;
+                        padding: 15px 32px;
+                        text-align: center;
+                        text-decoration: none;
+                        display: inline-block;
+                        font-size: 16px;
+                        margin: 4px 2px;
+                        cursor: pointer;
+                        border-radius: 8px;
+                    }
+                    .h_input {
+                        background-color: #f44336;
+                        height: 50px;
+                    }
+                    .input_frame {
+                        width: 75px;
+                        height: 40px;
+                        border-radius: 8px;
+                    }
+                    span {
+                        font-size: 35px;
+                        line-height: 55px;
+                        color: #bba23d;
+                        vertical-align: bottom;
+                    }
+                </style>
                 <script type='text/javascript'>
                     /*定义全局变量*/
                     var index = $indexJson;
@@ -336,31 +366,32 @@ function image($dir, $pattern) {
                     <a style='display: inline-block;' id='link' href=''>收藏列表</a>
                 </div>
                 <div style='text-align: center;'>
-                    <img src=$srcArr[$index] alt='' style='width: auto;height: 1345px'><br>
+                    <!--<img src=$srcArr[$index] alt='' style='width: auto;height: 1345px'><br>-->
+                    <img src=$srcArr[$index] alt='' style='width: 100vw;'><br>
                 </div>
                 <div style='text-align: center;top: 0;left: 0;width: 100%;overflow-x:hidden'>
-                    <button id='prev' onclick='getProImg()' style='width: 120px;height: 50px'>上一张</button>
-                    <button id='next' onclick='getNextImg()' style='width: 120px;height: 50px'>下一张</button>
-                    <button id='start' onclick='start();' style='width: 120px;height: 50px'>开始</button>
-                    <button id='stop' onclick='stop();' style='width: 120px;height: 50px'>停止</button>
-                    <span style='font-size: 12px;color: #937c1a'>第</span>
-                    <input id='page' type='text' name='num' style='width: 60px;height: 25px'/>
-                    <span style='font-size: 12px;color: #937c1a'>张</span>
+                    <button id='prev' onclick='getProImg()'>上一张</button>
+                    <button id='next' onclick='getNextImg()'>下一张</button>
+                    <button id='start' onclick='start();'>开始</button>
+                    <button id='stop' onclick='stop();'>停止</button>
+                    <span>第</span>
+                    <input id='page' type='text' name='num' class='input_frame'/>
+                    <span>张</span>
                     <button id='goto' onclick='goToImg();' style='width: 120px;height: 50px'>跳转</button>
                     <form style='display: inline;' method='post' action='collect.php'>
                         <input type='hidden' id='collect' name='' value=''>
-                        <input style='margin-top: 5px;width: 120px;height: 50px;background: red; color: #ff0;font-size:20px;' type='submit' id='buttonName' value=''>
+                        <input class='input h_input' style='color: #ff0;' type='submit' id='buttonName' value=''>
                     </form>
                     <form style='display: inline;' method='post' action='collect.php'>
                         <input type='hidden' id='record' name='record' value=''>
                         <input type='hidden' id='catalog' name='catalog' value=''>
                         <input type='hidden' id='prefix' name='prefix' value=$catalogPrefix>
-                        <input style='margin-top: 5px;width: 120px;height: 50px;background: #470293; color: #933d03;font-size:20px;' type='submit' value='保存记录'>
+                        <input class='input h_input' style='color: #1b2d93;' type='submit' value='保存记录'>
                     </form>
                 </div>
                 <script type='text/javascript'>
                     function load (){
-                        var beginX, beginY, endX, endY, swipeUp, swipeDown;
+                        var beginX, beginY, endX, endY, swipeRight, swipeLeft;
                         var ele = document.getElementsByTagName('img')[0];
                         ele.addEventListener('touchstart',touch, false);
                         ele.addEventListener('touchmove',touch, false);
@@ -377,37 +408,37 @@ function image($dir, $pattern) {
                                 case 'touchmove':
                                     endX = event.targetTouches[0].screenX;
                                     endY = event.targetTouches[0].screenY;
-                                    //上下滑动
-                                    if (Math.abs(endX - beginX) - Math.abs(endY - beginY) < 0) {
-                                        /*向下滑动*/
-                                        if (endY - beginY > 112) {
-                                            swipeUp = false;
-                                            swipeDown = true;
+                                    //左右滑动
+                                    if (Math.abs(endX - beginX) - Math.abs(endY - beginY) > 0) {
+                                        /*向右滑动*/
+                                        if (endX - beginX > 9) {
+                                            swipeRight = false;
+                                            swipeLeft = true;
                                         }
-                                        /*向上滑动*/
-                                        else if (beginY - endY > 112){
-                                            swipeDown = false;
-                                            swipeUp = true;
+                                        /*向左滑动*/
+                                        else if (beginX - endX > 9){
+                                            swipeLeft = false;
+                                            swipeRight = true;
                                         }
                                         /*不动*/
                                         else {
-                                            swipeDown = false;
-                                            swipeUp = false;
+                                            swipeRight = false;
+                                            swipeLeft = false;
                                         }
                                     }
                                     break;
                                 case 'touchend':
-                                    if (Math.abs(endX - beginX) - Math.abs(endY - beginY) < 0) {
+                                    if (Math.abs(endX - beginX) - Math.abs(endY - beginY) > 0) {
                                         event.stopPropagation();
                                         event.preventDefault();
-                                        if (swipeUp) {
-                                            swipeUp = !swipeUp;
-                                            /*向上滑动*/
+                                        if (swipeRight) {
+                                            swipeRight = !swipeRight;
+                                            /*向右滑动*/
                                             getNextImg();
                                         }
-                                        if(swipeDown) {
-                                            swipeDown = !swipeDown;
-                                            /*向下滑动*/
+                                        if(swipeLeft) {
+                                            swipeLeft = !swipeLeft;
+                                            /*向左滑动*/
                                             getProImg();
                                         }
                                     }
