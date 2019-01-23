@@ -236,12 +236,15 @@ function image($dir, $pattern) {
                         height: 45px;
                         border-radius: 50px;
                         vertical-align: middle;
+                        border:0.5px solid #dfdfdf;
+                        box-shadow: 8px 6px 16px 0 rgba(0,0,0,0.2), 0 6px 10px 0 rgba(0,0,0,0.19);
                     }
                     span {
                         font-size: 35px;
                         line-height: 55px;
                         color: #937c1a;
                         vertical-align: bottom;
+                        text-shadow: 0 0 0.2em #c6c6c6, 0 0 0.2em #c6c6c6, 0 0 0.2em #c6c6c6;
                     }
                 </style>
                 <script type='text/javascript'>
@@ -361,10 +364,10 @@ function image($dir, $pattern) {
                     }
                 </script>
              </head>
-             <body style='top: 0;left: 0;width: 100%;height: 100%' bgcolor='#c6c6c6'>
+             <body style='top: 0;left: 0;width: 100%;height: 100%' bgcolor='#fff'>
                 <div id='outer' style='text-align: center;top: 0;left: 0;width: 100%;overflow-x:hidden'>
-                    <p style='display: inline-block;color: #937c1a' id='info'>这是第X张图片</p>
-                    <a style='display: inline-block;' id='link' href=''>收藏列表</a>
+                    <p style='display: inline-block;color: #937c1a;font-size: 20px' id='info'>这是第X张图片</p>&nbsp;&nbsp;
+                    <a style='display: inline-block;font-size: 20px' id='link' href=''>收藏列表</a>
                 </div>
                 <div style='text-align: center;'>
                     <img src=$srcArr[$index] alt='' style='width: 100vw;'><br>
