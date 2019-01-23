@@ -226,9 +226,10 @@ function image($dir, $pattern) {
                         margin: 4px 2px;
                         cursor: pointer;
                         border-radius: 8px;
+                        box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
                     }
                     .h_input {
-                        background-color: #f44336;
+                        background-color: #008CBA;
                         height: 50px;
                     }
                     .input_frame {
@@ -239,7 +240,7 @@ function image($dir, $pattern) {
                     span {
                         font-size: 35px;
                         line-height: 55px;
-                        color: #bba23d;
+                        color: #937c1a;
                         vertical-align: bottom;
                     }
                 </style>
