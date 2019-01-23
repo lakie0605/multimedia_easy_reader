@@ -228,6 +228,9 @@ function image($dir, $pattern) {
                         border-radius: 8px;
                         box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
                     }
+                    .button {
+                        height: 50px;
+                    }
                     .h_input {
                         background-color: #008CBA;
                         height: 50px;
@@ -367,18 +370,17 @@ function image($dir, $pattern) {
                     <a style='display: inline-block;' id='link' href=''>收藏列表</a>
                 </div>
                 <div style='text-align: center;'>
-                    <!--<img src=$srcArr[$index] alt='' style='width: auto;height: 1345px'><br>-->
                     <img src=$srcArr[$index] alt='' style='width: 100vw;'><br>
                 </div>
-                <div style='text-align: center;top: 0;left: 0;width: 100%;overflow-x:hidden'>
-                    <button id='prev' onclick='getProImg()'>上一张</button>
-                    <button id='next' onclick='getNextImg()'>下一张</button>
-                    <button id='start' onclick='start();'>开始</button>
-                    <button id='stop' onclick='stop();'>停止</button>
+                <div style='text-align: center;top: 0px;left: 0;width: 100%;height: 75px;margin-top: 10px;overflow-x:hidden'>
+                    <button id='prev' class='button' onclick='getProImg()'>上一张</button>
+                    <button id='next' class='button' onclick='getNextImg()'>下一张</button>
+                    <button id='start' class='button' onclick='start();'>开始</button>
+                    <button id='stop' class='button' onclick='stop();'>停止</button>
                     <span>第</span>
                     <input id='page' type='text' name='num' class='input_frame'/>
                     <span>张</span>
-                    <button id='goto' onclick='goToImg();' style='width: 120px;height: 50px'>跳转</button>
+                    <button id='goto' class='button' onclick='goToImg();'>跳转</button>
                     <form style='display: inline;' method='post' action='collect.php'>
                         <input type='hidden' id='collect' name='' value=''>
                         <input class='input h_input' style='color: #ff0;' type='submit' id='buttonName' value=''>
