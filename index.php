@@ -228,17 +228,14 @@ function image($dir, $pattern) {
                         border-radius: 8px;
                         box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
                     }
-                    .button {
-                        height: 50px;
-                    }
-                    .h_input {
-                        background-color: #008CBA;
+                    .button, .h_input {
                         height: 50px;
                     }
                     .input_frame {
                         width: 75px;
-                        height: 40px;
-                        border-radius: 8px;
+                        height: 45px;
+                        border-radius: 50px;
+                        vertical-align: middle;
                     }
                     span {
                         font-size: 35px;
@@ -383,13 +380,13 @@ function image($dir, $pattern) {
                     <button id='goto' class='button' onclick='goToImg();'>跳转</button>
                     <form style='display: inline;' method='post' action='collect.php'>
                         <input type='hidden' id='collect' name='' value=''>
-                        <input class='input h_input' style='color: #ff0;' type='submit' id='buttonName' value=''>
+                        <input class='input h_input' style='background-color: #f44336;' type='submit' id='buttonName' value=''>
                     </form>
                     <form style='display: inline;' method='post' action='collect.php'>
                         <input type='hidden' id='record' name='record' value=''>
                         <input type='hidden' id='catalog' name='catalog' value=''>
                         <input type='hidden' id='prefix' name='prefix' value=$catalogPrefix>
-                        <input class='input h_input' style='color: #1b2d93;' type='submit' value='保存记录'>
+                        <input class='input h_input' style='background-color: #008CBA;' type='submit' value='保存记录'>
                     </form>
                 </div>
                 <script type='text/javascript'>
