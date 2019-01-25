@@ -85,7 +85,7 @@ function video($dir) {
             $presentFolder =  $arrPath[count($arrPath) - 1];
             $filename = $arrUrl[count($arrUrl) - 1];
             $url = '/' .  $presentFolder . '/video.php?c&dir=' . $arrUrl[0] . '&name=' . $filename;
-            echo "<a href=$url>$filename</a><br>";
+            echo "<a style='font-size: 39px' href=$url>$filename</a><br>";
         }
     } else {
         if (is_dir($dir)) {
@@ -102,7 +102,7 @@ function video($dir) {
                     }
                     $presentFolder =  $arrPath[count($arrPath) - 1];
                     $url = '/' .  $presentFolder . '/video.php?dir=' . $dir . '&name=' . $filename;
-                    echo "<a href=$url>$filename</a><br>";
+                    echo "<a style='font-size: 39px' href=$url>$filename</a><br><br>";
                 }
             }
             closedir($handler);
