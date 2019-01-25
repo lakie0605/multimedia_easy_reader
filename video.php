@@ -1,9 +1,4 @@
 <?php
-/*if (strtoupper(substr(PHP_OS,0,3)) === 'WIN') {
-    $slicer = '\\';
-} else {
-    $slicer = '/';
-}*/
 $slicer = '/';
 if (strstr($_GET['dir'], $slicer) || strstr($_GET['dir'], '.')) {
     die("<script>alert('是你飘了？还是我提不动刀了？');</script>");
@@ -51,6 +46,22 @@ echo "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://
             <meta http-equiv='Content-Type' content='text/html; charset=utf-8' />
             <title>video</title>
         </head>
+        <style>
+            .button {
+                background-color: #4CAF50;
+                border: none;
+                color: white;
+                padding: 15px 32px;
+                text-align: center;
+                text-decoration: none;
+                display: inline-block;
+                font-size: 16px;
+                margin: 4px 2px;
+                cursor: pointer;
+                border-radius: 8px;
+                box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+            }
+        </style>
         <script type='text/javascript'>
             var index;
             var video = $videoNamesJson;
@@ -129,7 +140,7 @@ echo "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://
                 <form style='display: inline;' method='post' action='collect.php'>
                     <input type='hidden' id='collect' name='' value=''>
                     <input type='hidden' id='category' name='category' value='video'>
-                    <input style='margin-top: 5px;width: 120px;height: 50px;background: red; color: #ff0;font-size:20px;' type='submit' id='buttonName' value=''>
+                    <input class='button' type='submit' id='buttonName' value=''>
                 </form>
             </div>
         </body>
